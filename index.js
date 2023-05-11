@@ -16,24 +16,89 @@ var _ = require('underbar');
  *
  * 4. To test your work, run the following command in your terminal:
  *
- *    npm start --prefix ./<YOUR_GITHUB_FOLDER>
+ *    npm start --prefix ./lgf-test
  *
  *    IMPORTANT: Make sure you replace <YOUR_GITHUB_FOLDER with your actual github folder name that is in your workspace.
  */
+//map, filter, reduce, each
+var maleCount = function(array){
+    let males = _.filter(array, function(customer){
+        return customer.gender === 'male';
+    })
+    return males.length;
+};
 
-var maleCount;
+var femaleCount = function(array){
+    let females = _.reduce(array, function(accumulator, current){ //accumulator = 0 | current {0}
+        if(current.gender === 'female'){
+            accumulator += 1; 
+        }
+        return accumulator
+    }, 0);//array, func seed
 
-var femaleCount;
+    return females;
+};
 
-var oldestCustomer;
+var oldestCustomer = function(array){
+    let oldest = _.reduce(array, function(accumulator, current){
+        //determine if current customer is older than accumulator
+        if(current.age > accumulator.age){
+            //return current if older
+            return current;
+        } else {
+            //return accumulator else
+            return accumulator; 
+        }
+      
+    })
+    return oldest.name;
+};
 
-var youngestCustomer;
+var youngestCustomer = function(array){
+    let youngest = _.reduce(array, function(accumulator, current){
+        //determine if current customer is younger than accumulator
+        if(current.age < accumulator.age){
+            return current;
+        } else {
+            return accumulator; 
+        }
+    
+    })
+    return youngest.name;
+};
 
-var averageBalance;
+var averageBalance = function(array){
+    let totalBal = _.reduce(array, function(accumulator, current){
+        return accumulator + parseFloat(current.balance.replace(/[$,]/g, ""))
+    }, 0);
+    return totalBal / array.length;
+};
 
-var firstLetterCount;
+var firstLetterCount = function(array, letter){
+    let counter = 0;
+    
+    _.each(array, function(customer){
+        if(customer.name.charAt(0).toLowerCase() === letter.toLowerCase()){
+            counter ++;
+        }
+    });
+    return counter;
+    
+};
 
-var friendFirstLetterCount;
+var friendFirstLetterCount = function(array, customer, letter){
+    let count = 0;
+    _.each(array, function(customerName) {
+        if(customerName.name === customer) {
+            _.each(customerName.friends, function(friend){
+                if(friend.name.charAt(0).toLowerCase() === letter.toLowerCase()){
+                    count ++;
+                }
+            });
+        }
+    });
+    return count;
+};
 
 var friendsCount;
 
