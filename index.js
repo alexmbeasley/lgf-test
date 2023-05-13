@@ -100,11 +100,32 @@ var friendFirstLetterCount = function(array, customer, letter){
     return count;
 };
 
-var friendsCount;
+var friendsCount = function(array, name){
+    let friendsArr = [];
+    _.each(array, function(customers){
+        _.each(customers.friends, function(friend){
+            if (friend.name === name){
+                friendsArr.push(customers.name);
+            }
+        });
+    });
+    return friendsArr;
+
+};
 
 var topThreeTags;
 
-var genderCount;
+var genderCount = function(array){
+    let gender = _.reduce(array, function(accumulator, current) {
+        if (accumulator[current.gender]){
+            accumulator[current.gender]++;
+        } else {
+            accumulator[current.gender] = 1;
+        }
+        return accumulator;
+    }, {})
+    return gender;
+};
 
 //////////////////////////////////////////////////////////////////////
 // DON'T REMOVE THIS CODE ////////////////////////////////////////////
