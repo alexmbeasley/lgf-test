@@ -22,20 +22,25 @@ var _ = require('underbar');
  */
 //map, filter, reduce, each
 var maleCount = function(array){
+    //use the filter function to store all the customers with male gender into a created male array 
     let males = _.filter(array, function(customer){
         return customer.gender === 'male';
     })
+    //return the length of that array
     return males.length;
 };
 
 var femaleCount = function(array){
+    //use reduce to create an accumulator value to store a count
     let females = _.reduce(array, function(accumulator, current){ //accumulator = 0 | current {0}
+        //if the gender is female add 1 to the count
         if(current.gender === 'female'){
             accumulator += 1; 
         }
+        //return the accumlated value
         return accumulator
     }, 0);//array, func seed
-
+    //return the created females seed
     return females;
 };
 
@@ -68,16 +73,20 @@ var youngestCustomer = function(array){
 };
 
 var averageBalance = function(array){
+    //use the reduce function and store the accumulator value as the sum of the balances
     let totalBal = _.reduce(array, function(accumulator, current){
+        //convert the balances to numbers by removing the $ and , 
         return accumulator + parseFloat(current.balance.replace(/[$,]/g, ""))
     }, 0);
+    //return the average
     return totalBal / array.length;
 };
 
 var firstLetterCount = function(array, letter){
     let counter = 0;
-    
+    //use the each function to loop thorugh the array and count any instance of the given letter
     _.each(array, function(customer){
+        //convert both to lower case
         if(customer.name.charAt(0).toLowerCase() === letter.toLowerCase()){
             counter ++;
         }
@@ -88,9 +97,13 @@ var firstLetterCount = function(array, letter){
 
 var friendFirstLetterCount = function(array, customer, letter){
     let count = 0;
+    //use each to loop through the customers array and find the frineds list
     _.each(array, function(customerName) {
+        //if the name matches the given name move foward
         if(customerName.name === customer) {
+            //use each to loop through the friends list
             _.each(customerName.friends, function(friend){
+                //compare if the names are in the list and return the value
                 if(friend.name.charAt(0).toLowerCase() === letter.toLowerCase()){
                     count ++;
                 }
@@ -102,6 +115,7 @@ var friendFirstLetterCount = function(array, customer, letter){
 
 var friendsCount = function(array, name){
     let friendsArr = [];
+    //same concept as count but push the names into a array
     _.each(array, function(customers){
         _.each(customers.friends, function(friend){
             if (friend.name === name){
@@ -113,17 +127,62 @@ var friendsCount = function(array, name){
 
 };
 
-var topThreeTags;
+
+    var topThreeTags = function(arrCustomers){
+
+        var topTags = [];
+        
+        //loop through the customers array to find each custoemr
+        _.each(arrCustomers, function(customer){
+            //loop through again to get tags
+            _.each(customer.tags, function(tag){
+        
+              let match = false;
+        
+              for(let i = 0 ; i < topTags.length; i++){
+                //if top tag alreay exist increat the count
+        
+                if( topTags[i].tag == tag){
+                  match = true;
+                  topTags[i].count++;
+                  
+                }
+        
+              }        
+              // if match is false, create a key/value with the tag and the count 
+              if (!match) topTags.push({"tag":tag,"count":1});
+        
+            });
+        
+          });
+          //sort the tags object from largest to smallest
+      topTags.sort((a, b) => b.count - a.count);
+      //slice everything but the top three
+      let topThreeObject = topTags.slice(0, 3);
+      // using map create an array with just the tag value
+      let topThree = _.map(topThreeObject, function(item){
+        return item.tag;
+      });
+      //return the top three
+      return topThree;
+    }
+    
 
 var genderCount = function(array){
+    // use the reduce function with an empty object as the seed
     let gender = _.reduce(array, function(accumulator, current) {
+        //if you are located at the current gender in the customers array
         if (accumulator[current.gender]){
+            //increase the count in the object by one
             accumulator[current.gender]++;
         } else {
+            //set it eqaul to one
             accumulator[current.gender] = 1;
         }
+        //return the accumulator count
         return accumulator;
     }, {})
+    //return the gender object
     return gender;
 };
 
